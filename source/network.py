@@ -30,3 +30,16 @@ class LLMNR:
     def disable():
         subprocess.run(["powershell", "-Command", "New-Item", "-Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows NT' -Name DNSClient"], capture_output=True, text=True)
         subprocess.run(["powershell", "-Command", "New-ItemProperty", "-Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient' -Name EnableMultiCast -Value 0 -PropertyType DWORD"], capture_output=True, text=True)
+
+
+class NetBIOS:
+    def status():
+        result = subprocess.run(["powershell", "-Command", "Get-ItemPropertyValue", "-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters\\Interfaces\\tcpip*' -Name NetbiosOptions"], capture_output=True, text=True)
+        if all(num == "2" for num in result.stdout.split()):
+            return True
+
+        return False
+    
+
+    def disable():
+        subprocess.run(["powershell", "-Command", "Set-ItemProperty", "-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters\\Interfaces\\tcpip*' -Name NetbiosOptions -Value 2"])

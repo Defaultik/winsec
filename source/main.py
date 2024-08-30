@@ -34,6 +34,16 @@ def main():
             print("INFO: LLMNR successfully disabled")
         else:
             print("WARNING: Failed to disable LLMNR")
+    
+    print("INFO: Trying to disable NetBIOS...")
+    if NetBIOS.status():
+        print("INFO: NetBIOS already disabled")
+    else:
+        NetBIOS.disable()
+        if NetBIOS.status():
+            print("INFO: NetBIOS successfully disabled")
+        else:
+            print("WARNING: Failed to disable NetBIOS")
 
 
 if __name__ == "__main__":
