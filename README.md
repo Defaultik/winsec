@@ -1,7 +1,8 @@
-# winsec
-**run only as admin**
-![](https://i.imgur.com/WtvXhqg.png)
+## winsec - windows security assistant
+helps to close most popular vulnerabilities in windows 10/11
+
+![](https://i.imgur.com/jjFoA3G.png)
 
 
 ##
-**in developing...**
+**i'll glad to get a star from you ❤️**
