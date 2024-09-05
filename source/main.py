@@ -1,7 +1,7 @@
 import os
 from ctypes import windll
-from network import *
-from hardware import *
+from modules.network import *
+from modules.hardware import *
 
 
 def init():
