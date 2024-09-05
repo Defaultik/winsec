@@ -5,6 +5,7 @@ from re import search
 class TPM:
     def __init__(self):
         self.name = "TPM"
+        self.type = "Hardware"
 
 
     def validation(self):    
@@ -23,6 +24,7 @@ class TPM:
 class SecureBoot:
     def __init__(self):
         self.name = "Secure Boot"
+        self.type = "Hardware"
 
 
     def validation(self):
