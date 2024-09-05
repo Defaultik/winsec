@@ -2,13 +2,14 @@ import subprocess
 from re import search
 
 
-# TODO: NetBios, WPAD, TLS, DNS
+# TODO: WPAD, TLS, DNS
 class SMBv1:
     def __init__(self):
         self.name = "SMBv1"
+        self.type = "Network"
 
 
-    def status():
+    def validation(self):
         result = subprocess.run(["powershell", "-Command", "Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol"], capture_output=True, text=True)
 
         if search(r'State\s*:\s*(\w+)', result.stdout).group(1) == "Disabled":
@@ -24,9 +25,10 @@ class SMBv1:
 class LLMNR:
     def __init__(self):
         self.name = "LLMNR"
+        self.type = "Network"
 
 
-    def status():
+    def validation(self):
         result = subprocess.run(["powershell", "-Command", "Get-ItemProperty", "-Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient' -name EnableMulticast"], capture_output=True, text=True)
 
         if result.stdout:
@@ -43,9 +45,10 @@ class LLMNR:
 class NetBIOS:
     def __init__(self):
         self.name = "NetBIOS"
+        self.type = "Network"
 
 
-    def status():
+    def validation(self):
         result = subprocess.run(["powershell", "-Command", "Get-ItemPropertyValue", "-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters\\Interfaces\\tcpip*' -Name NetbiosOptions"], capture_output=True, text=True)
         if all(num == "2" for num in result.stdout.split()):
             return True
