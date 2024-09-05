@@ -15,24 +15,21 @@ def init():
 
 
 def main():
-    for i in (TPM(), SecureBoot()):
-        print("INFO: Validating " + i.name)
+    for module in (TPM(), SecureBoot(), SMBv1(), LLMNR(), NetBIOS()):
+        print("INFO: Validating " + module.name)
 
-        if i.validation():
-            print(f"INFO: {i.name} successfully validated\n")
+        if module.validation():
+            print(f"INFO: {module.name} successfully validated\n")
         else:
-            print(f"WARNING: {i.name} is Disabled, but your computer supports it\nStrongly recommended to turn it on in BIOS/UEFI\n")
-
-    for i in (SMBv1(), LLMNR(), NetBIOS()):
-        print(f"INFO: Trying to disable {i.name}...")
-        if i.status():
-            print(f"INFO: {i.name} already disabled\n")
-        else:
-            i.disable()
-            if i.status():
-                print(f"INFO: {i.name} successfully disabled\n")
-            else:
-                print(f"WARNING: Failed to disable {i.name}\n")
+            if module.type == "Hardware":
+                print(f"WARNING: {module.name} is Disabled, but your computer supports it\nStrongly recommended to turn it on in BIOS/UEFI\n")
+            elif module.type == "Network":
+                module.disable()
+                
+                if module.validation():
+                    print(f"INFO: {module.name} successfully disabled\n")
+                else:
+                    print(f"WARNING: Failed to disable {module.name}\n")
 
 
 if __name__ == "__main__":
