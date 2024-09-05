@@ -4,6 +4,10 @@ from re import search
 
 # TODO: NetBios, WPAD, TLS, DNS
 class SMBv1:
+    def __init__(self):
+        self.name = "SMBv1"
+
+
     def status():
         result = subprocess.run(["powershell", "-Command", "Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol"], capture_output=True, text=True)
 
@@ -18,6 +22,10 @@ class SMBv1:
     
 
 class LLMNR:
+    def __init__(self):
+        self.name = "LLMNR"
+
+
     def status():
         result = subprocess.run(["powershell", "-Command", "Get-ItemProperty", "-Path 'HKLM:\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient' -name EnableMulticast"], capture_output=True, text=True)
 
@@ -33,6 +41,10 @@ class LLMNR:
 
 
 class NetBIOS:
+    def __init__(self):
+        self.name = "NetBIOS"
+
+
     def status():
         result = subprocess.run(["powershell", "-Command", "Get-ItemPropertyValue", "-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters\\Interfaces\\tcpip*' -Name NetbiosOptions"], capture_output=True, text=True)
         if all(num == "2" for num in result.stdout.split()):
