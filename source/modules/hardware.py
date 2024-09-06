@@ -2,10 +2,15 @@ import subprocess
 from re import search
 
 
-class TPM:
-    def __init__(self):
-        self.name = "TPM"
+class Hardware:
+    def __init__(self, name):
+        self.name = name
         self.type = "Hardware"
+
+
+class TPM(Hardware):
+    def __init__(self):
+        super().__init__("TPM")
 
 
     def validation(self):    
@@ -21,10 +26,9 @@ class TPM:
         return False
 
 
-class SecureBoot:
+class SecureBoot(Hardware):
     def __init__(self):
-        self.name = "Secure Boot"
-        self.type = "Hardware"
+        super().__init__("Secure Boot")
 
 
     def validation(self):

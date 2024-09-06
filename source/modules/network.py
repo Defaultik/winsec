@@ -2,11 +2,16 @@ import subprocess
 from re import search
 
 
-# TODO: WPAD, TLS, DNS
-class SMBv1:
-    def __init__(self):
-        self.name = "SMBv1"
+class Network:
+    def __init__(self, name):
+        self.name = name
         self.type = "Network"
+
+
+# TODO: WPAD, TLS, DNS
+class SMBv1(Network):
+    def __init__(self):
+        super().__init__("SMBv1")
 
 
     def validation(self):
@@ -22,10 +27,9 @@ class SMBv1:
         subprocess.run(["powershell", "-Command", "Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol"], capture_output=True, text=True)
     
 
-class LLMNR:
+class LLMNR(Network):
     def __init__(self):
-        self.name = "LLMNR"
-        self.type = "Network"
+        super().__init__("LLMNR")
 
 
     def validation(self):
@@ -42,10 +46,9 @@ class LLMNR:
         subprocess.run(["powershell", "-Command", "New-ItemProperty", "-Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient' -Name EnableMultiCast -Value 0 -PropertyType DWORD"], capture_output=True, text=True)
 
 
-class NetBIOS:
+class NetBIOS(Network):
     def __init__(self):
-        self.name = "NetBIOS"
-        self.type = "Network"
+        super().__init__("NetBIOS")
 
 
     def validation(self):
