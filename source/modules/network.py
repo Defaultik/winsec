@@ -3,15 +3,16 @@ from re import search
 
 
 class Network:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, name, danger):
         self.type = "Network"
+        self.name = name
+        self.danger = danger
 
 
 # TODO: WPAD, TLS, DNS
 class SMBv1(Network):
     def __init__(self):
-        super().__init__("SMBv1")
+        super().__init__("SMBv1", "HIGH")
 
 
     def validation(self):
@@ -23,13 +24,13 @@ class SMBv1(Network):
         return False
 
 
-    def disable():
+    def disable(self):
         subprocess.run(["powershell", "-Command", "Disable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol"], capture_output=True, text=True)
     
 
 class LLMNR(Network):
     def __init__(self):
-        super().__init__("LLMNR")
+        super().__init__("LLMNR", "MEDIUM")
 
 
     def validation(self):
@@ -41,14 +42,14 @@ class LLMNR(Network):
         return False
 
 
-    def disable():
+    def disable(self):
         subprocess.run(["powershell", "-Command", "New-Item", "-Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows NT' -Name DNSClient"], capture_output=True, text=True)
         subprocess.run(["powershell", "-Command", "New-ItemProperty", "-Path 'HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient' -Name EnableMultiCast -Value 0 -PropertyType DWORD"], capture_output=True, text=True)
 
 
 class NetBIOS(Network):
     def __init__(self):
-        super().__init__("NetBIOS")
+        super().__init__("NetBIOS", "HIGH")
 
 
     def validation(self):
@@ -59,5 +60,10 @@ class NetBIOS(Network):
         return False
     
 
-    def disable():
+    def disable(self):
         subprocess.run(["powershell", "-Command", "Set-ItemProperty", "-Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Services\\NetBT\\Parameters\\Interfaces\\tcpip*' -Name NetbiosOptions -Value 2"])
+
+
+class SecureDNS(Network):
+    def __init__(self):
+        super().__init__("Secure DNS", "LOW")
