@@ -1,4 +1,4 @@
-## winsec - windows security assistant
+## 🛡️ winsec - windows security assistant
 helps to close most popular vulnerabilities in windows 10/11
 
 ![](https://i.imgur.com/jjFoA3G.png)
